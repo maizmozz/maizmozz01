@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { Tasks } from '../api/tasks.js';
  
 import Task from './Task.jsx';
+import { FormControl, FormGroup } from 'react-bootstrap';
  
 // App component - represents the whole app
 /* export default class App extends Component {
@@ -73,15 +74,27 @@ class App extends Component {
           {this.renderTasks()}
         </ul>
 
-        <header>
+        {/*<header>
           <form className="new-task" onSubmit={this.handleSubmit.bind(this)}>
+          <form  onSubmit={this.handleSubmit.bind(this)}>
             <input
               type="text"
               ref="textInput"
               placeholder="Type to add new tasks"
             />
           </form>
-        </header>
+        </header>*/}
+
+        <form onSubmit={this.handleSubmit.bind(this)}>
+            <FormGroup controlId="formBasicText">
+              <FormControl
+              type="text"
+              ref="textInput"
+              placeholder="Type to add new tasks"
+              />
+              <FormControl.Feedback />
+            </FormGroup>
+          </form>
       </div>
 
     );

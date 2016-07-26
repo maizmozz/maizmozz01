@@ -2,8 +2,8 @@
 /* CSS declarations go here */
 body {
   font-family: sans-serif;
-  background-color: #315481;
-  background-image: linear-gradient(to bottom, #315481, #918e82 100%);
+  background-color: #FFFFFF;
+  /*background-image: linear-gradient(to bottom, #315481, #918e82 100%);*/
   background-attachment: fixed;
  
   position: absolute;
@@ -26,8 +26,8 @@ body {
 }
  
 header {
-  background: #d2edf4;
-  background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
+  background-color: rgba(0, 0, 0, 0.06);
+  /*background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);*/
   padding: 20px 15px 15px 15px;
   position: relative;
 }
