@@ -125,3 +125,7 @@ header .hide-completed {
     padding-bottom: 5px;
   }
 }
+
+.button1{
+  float: right;
+}
