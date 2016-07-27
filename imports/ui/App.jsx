@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
 import { Tasks } from '../api/tasks.js';
- 
+import { check } from 'meteor/check';
+import { Meteor } from 'meteor/meteor';
+
 import Task from './Task.jsx';
 import { FormGroup, FormControl } from 'react-bootstrap';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
@@ -42,6 +44,35 @@ import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 }
  */
 
+Meteor.methods({
+  'tasks.insert'(text) {
+    check(text, String);
+ 
+    // Make sure the user is logged in before inserting a task
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+ 
+    Tasks.insert({
+      text,
+      createdAt: new Date(),
+      owner: this.userId,
+      username: Meteor.users.findOne(this.userId).username,
+    });
+  },
+  'tasks.remove'(taskId) {
+    check(taskId, String);
+ 
+    Tasks.remove(taskId);
+  },
+  'tasks.setChecked'(taskId, setChecked) {
+    check(taskId, String);
+    check(setChecked, Boolean);
+ 
+    Tasks.update(taskId, { $set: { checked: setChecked } });
+  },
+});
+
 
 class App extends Component {
 
@@ -50,12 +81,14 @@ class App extends Component {
 
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
 
-    Tasks.insert({
+/*    Tasks.insert({
       text,
       createdAt: new Date(),
       owner: Meteor.userId(),             // _id of logged in user
       username: Meteor.user().username,}  // username of logged in user
-    );
+    );*/
+
+     Meteor.call('tasks.insert', text);
 
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
