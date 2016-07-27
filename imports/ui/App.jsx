@@ -5,6 +5,7 @@ import { Tasks } from '../api/tasks.js';
  
 import Task from './Task.jsx';
 import { FormGroup, FormControl } from 'react-bootstrap';
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
  
 // App component - represents the whole app
 /* export default class App extends Component {
@@ -51,7 +52,9 @@ class App extends Component {
 
     Tasks.insert({
       text,
-      createdAt: new Date(),}
+      createdAt: new Date(),
+      owner: Meteor.userId(),             // _id of logged in user
+      username: Meteor.user().username,}  // username of logged in user
     );
 
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
@@ -118,6 +121,9 @@ class App extends Component {
           </form>
         </header>*/}
 
+        <AccountsUIWrapper />
+
+        { this.props.currentUser ?
         <form onSubmit={this.handleSubmit.bind(this)}>
             <FormGroup controlId="formBasicText">
               <FormControl
@@ -127,7 +133,8 @@ class App extends Component {
               />
               <FormControl.Feedback />
             </FormGroup>
-          </form>
+          </form> : ''
+        }
       </div>
 
     );
@@ -137,11 +144,13 @@ class App extends Component {
 App.propTypes = {
   tasks: PropTypes.array.isRequired,
   incompleteCount: PropTypes.number.isRequired,
+  currentUser: PropTypes.object,
 };
 
 export default createContainer(() => {
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
+    currentUser: Meteor.user(),
   };
 }, App);
